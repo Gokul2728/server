@@ -1,4 +1,4 @@
-<!-- 
+<?php
 error_reporting(0);
 
 $msg = "";
@@ -13,7 +13,7 @@ if (isset($_POST['upload'])) {
 	$db = mysqli_connect("localhost", "root", "", "login");
 
 	// Get all the submitted data from the form
-	$sql = "INSERT INTO upload (photo,name) VALUES ('$filename')";
+	$sql = "INSERT INTO upload (photo) VALUES ('$filename')";
 
 	// Execute query
 	mysqli_query($db, $sql);
@@ -25,30 +25,30 @@ if (isset($_POST['upload'])) {
 		echo "<h3> Failed to upload image!</h3>";
 	}
 }
-?> -->
-<?php
-if (isset($_FILES['image'])) {
+?>
+
+<!-- if (isset($_FILES['image'])) {
 	$image = $_FILES['image']['tmp_name'];
 	$imageData = base64_encode(file_get_contents($image));
 	$src = 'data: ' . mime_content_type($image) . ';base64,' . $imageData;
 
 	echo '<img src="' . $src . '" alt="Selected Image">';
 }
-?>
+?> -->
 <!DOCTYPE html>
 <html>
 
-<!-- <head>
-	<title>Image Upload</title>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="style.css" />
-</head> -->
+<head>
+    <title>Image Upload</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
 
 <body>
-	<!-- <div id="content">
+    <div id="content">
         <form method="POST" action="" enctype="multipart/form-data">
             <div class="form-group">
-                <input class="form-control" type="file" name="uploadfile" value="" />
+                <input class="form-control" type="file" name="uploadfile" />
             </div>
             <div class="form-group">
                 <button class="btn btn-primary" type="submit" name="upload">UPLOAD</button>
@@ -57,11 +57,11 @@ if (isset($_FILES['image'])) {
     </div>
     <div id="display-image">
 
-    </div> -->
-	<form method="POST" enctype="multipart/form-data">
-		<input type="file" name="image" accept="image/*">
-		<input type="submit" value="View Image">
-	</form>
+    </div>
+    <!-- <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="image" accept="image/*">
+        <input type="submit" value="View Image">
+    </form> -->
 
 </body>
 

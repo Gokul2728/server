@@ -47,3 +47,52 @@ if ($db) {
 } else {
     echo "Out of file";
 }
+?>
+<!-- /////////////////////// -->
+<?php
+// Set up database connection
+
+$host = '121.200.55.62';
+$username = 'ragav';
+$password = 'ragav';
+$database = 'ecom';
+
+$conn = new mysqli($host, $username, $password, $database);
+if ($conn->connect_error) {
+    die('Database connection failed: ' . $conn->connect_error);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_FILES['pdf']) && isset($_FILES['pdf1'])) {
+
+        $pdf_file = $_FILES['pdf']['tmp_name'];
+        $pdf_file1 = $_FILES['pdf1']['tmp_name'];
+
+        $pdf_name = $_FILES['pdf']['name'];
+        $pdf_name1 = $_FILES['pdf1']['name'];
+
+        $upload_dir = '../../../pdf/english/product/';
+        $upload_dir1 = '../../../pdf/tamil/product/';
+
+        $upload_path = $upload_dir . basename($pdf_name);
+        $upload_path1 = $upload_dir1 . basename($pdf_name1);
+
+        if (move_uploaded_file($pdf_file, $upload_path) && move_uploaded_file($pdf_file1, $upload_path1)) {
+
+            $sql->prepare("INSERT INTO product_master (pdf_english,pdf_tamil,product_category) VALUES (?,?,?)");
+            $sql->bind_params('sss', $pdf_name, $pdf_name1, 5);
+
+            if ($conn->query($sql) === TRUE) {
+                echo 'PDF file uploaded and saved to database.';
+            } else {
+                echo 'Error saving PDF file to database: ' . $conn->error;
+            }
+        } else {
+            echo 'Error uploading PDF file.';
+        }
+    } else {
+        echo 'No PDF file uploaded.';
+    }
+}
+
+$conn->close(); -->

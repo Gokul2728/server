@@ -1,26 +1,31 @@
 <?php
-include 'db/connection.php';
-$db = db();
-$res = array();
+// Database connection
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "your_database";
 
-if ($db) {
-
-    // File upload handling
-    if ($_FILES["photo"]["error"] == UPLOAD_ERR_OK) {
-        $file = $_FILES["photo"]["tmp_name"];
-        $photoData = addslashes(file_get_contents($file)); // Read the file data
-
-        // Insert photo into the database
-        $sql = "INSERT INTO photos (photo_blob) VALUES ('$photoData')";
-        if ($conn->query($sql) === TRUE) {
-            echo "Photo uploaded successfully.";
-        } else {
-            echo "Error uploading photo: " . $conn->error;
-        }
-    } else {
-        echo "Error uploading photo.";
-    }
+$conn = new mysqli($servername, $username, $password, $dbname);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
+
+// File upload handling
+if ($_FILES["photo"]["error"] == UPLOAD_ERR_OK) {
+    $file = $_FILES["photo"]["tmp_name"];
+    $photoData = addslashes(file_get_contents($file)); // Read the file data
+
+    // Insert photo into the database
+    $sql = "INSERT INTO photos (photo_blob) VALUES ('$photoData')";
+    if ($conn->query($sql) === TRUE) {
+        echo "Photo uploaded successfully.";
+    } else {
+        echo "Error uploading photo: " . $conn->error;
+    }
+} else {
+    echo "Error uploading photo.";
+}
+
 // Output uploaded photo
 $sql = "SELECT photo_blob FROM photos ORDER BY id DESC LIMIT 1"; // Get the last uploaded photo
 $result = $conn->query($sql);
