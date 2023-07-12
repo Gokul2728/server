@@ -13,8 +13,10 @@ if ($db) {
             $sql->execute();
             $result = $sql->get_result();
             $count = mysqli_num_rows($result);
+            // login($db, 'INSERT INTO users(username ,password) VALUES(?,?)', $username);
             if ($count == 0) {
                 $pass_e = md5($password);
+                // login($db, "SELECT*FROM user where id =1", 'ss', $username);
                 $sql = $db->prepare('INSERT INTO users(username ,password) VALUES(?,?)');
                 $sql->bind_param('ss', $username, $pass_e);
                 $sql->execute();
@@ -31,7 +33,7 @@ if ($db) {
             }
         } else {
             $res['success'] = false;
-            $res['message'] = 'Alraedy Exists';
+            $res['message'] = 'Already Exists';
         }
     } catch (Exception $throw) {
         $res['success'] = false;
@@ -42,3 +44,12 @@ if ($db) {
     $res['message'] = 'DB Not Connected';
 }
 echo json_encode($res);
+
+function login($db, $querry, $bind, $username)
+{
+    $sql = $db->prepare($querry);
+    $sql->bind_param($bind, $username);
+    $sql->execute();
+    $result = $sql->get_result();
+    $count = mysqli_num_rows($result);
+}
