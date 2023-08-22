@@ -7,7 +7,7 @@ if ($db) {
 
    if (isset($_POST['username']) && isset($_POST['password'])) {
       extract($_POST);
-      $sql = $db->prepare('SELECT * FROM users WHERE username,password = ?,?');
+      $sql = $db->prepare('SELECT * FROM users WHERE username=?,password = ?');
       $sql->bind_param('s,s', $username, $password);
       $sql->execute();
       $result = $sql->get_result();
